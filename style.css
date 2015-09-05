@@ -1,0 +1,200 @@
+@charset "UTF-8";
+@import url("../simplicity/style.css");
+
+/*
+*	Theme Name: Simplicity child
+*	Template: simplicity
+*	Customized by Hidekichi
+*/
+
+*, *::before, *::after {
+	box-sizing: border-box;
+}
+body {
+	font-family: 'Lucida Grande', 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;
+}
+
+/*redesign sns*/
+
+.sns-group ul {
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-flex-flow: row wrap;
+	-ms-flex-flow: row wrap;
+	flex-flow: row wrap;
+	-webkit-box-pack: start;
+	-webkit-justify-content: flex-start;
+	-ms-flex-pack: start;
+	justify-content: flex-start;
+	list-item: none;
+	margin: 0;
+	padding: 0;
+	line-height: initial !important;
+}
+.sns-group ul li {
+	position: relative;
+	width: 87px;
+	height: 20px;
+	margin-right: 10px !important;
+	margin-bottom: 10px !important;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-flex-flow: row wrap;
+	-ms-flex-flow: row wrap;
+	flex-flow: row wrap;
+	-webkit-box-pack: justify;
+	-webkit-justify-content: space-between;
+	-ms-flex-pack: justify;
+	justify-content: space-between;
+}
+.sns-group ul li:last-child {
+	margin: 0;
+}
+.sns-group ul li a {
+	text-decoration: none;
+}
+.sns-group ul li span {
+	position: relative;
+	display: block;
+	font-size: 14px;
+	text-align: center;
+}
+.sns-group ul li .icon {
+	width: 30px;
+	height: 100%;
+	border-radius: 3px;
+	border: 1px solid #bbb;
+	color: #fff;
+	position: relative;
+}
+.sns-group ul li .icon span {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	-webkit-transform: translate(-50%, -50%);
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	width: 100%;
+	/*icon- huck*/
+	height: 16px;
+	/*icon- huck*/
+}
+.sns-group ul li .icon:hover::before {
+	content: "";
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	background-color: rgba(255, 255, 255, 0.5);
+}
+.sns-group ul li .social-count {
+	width: 50px;
+	height: 100%;
+	border: 1px solid #bbb;
+	border-radius: 3px;
+	background-color: #fff;
+	font-family: Arial;
+	font-weight: bold;
+	line-height: 18px !important;
+	color: #777;
+}
+.sns-group ul li .social-count > span {
+	line-height: 20px;
+}
+.sns-group ul li .social-count::before, .sns-group ul li .social-count::after {
+	content: "";
+	position: absolute;
+	top: 50%;
+	left: 0%;
+	width: 0;
+	height: 0;
+	border-style: solid;
+	pointer-events: none;
+}
+.sns-group ul li .social-count::after {
+	-webkit-transform: translate(-3px, -50%);
+	-ms-transform: translate(-3px, -50%);
+	transform: translate(-3px, -50%);
+	border-color: transparent #fff transparent transparent;
+	border-width: 4px 8px 4px 0;
+}
+.sns-group ul li .social-count::before {
+	-webkit-transform: translate(-5px, -50%);
+	-ms-transform: translate(-5px, -50%);
+	transform: translate(-5px, -50%);
+	border-color: transparent #ccc transparent transparent;
+	border-width: 2px 4px 2px 0;
+}
+.sns-group ul.balloon li {
+	height: 80px;
+	-webkit-flex-flow: column wrap;
+	-ms-flex-flow: column wrap;
+	flex-flow: column wrap;
+}
+.sns-group ul.balloon a:first-child {
+	-webkit-box-ordinal-group: 3;
+	-webkit-order: 2;
+	-ms-flex-order: 2;
+	order: 2;
+}
+.sns-group ul.balloon a:last-child {
+	-webkit-box-ordinal-group: 2;
+	-webkit-order: 1;
+	-ms-flex-order: 1;
+	order: 1;
+}
+.sns-group ul.balloon a .icon {
+	width: 100%;
+	height: 35px;
+	line-height: 35px;
+}
+.sns-group ul.balloon a .social-count {
+	width: 100%;
+	height: 35px;
+	line-height: 33px;
+}
+.sns-group ul.balloon a .social-count::before, .sns-group ul.balloon a .social-count::after {
+	top: initial;
+	bottom: 0;
+	left: 50%;
+}
+.sns-group ul.balloon a .social-count::after {
+	-webkit-transform: translate(-50%, 3px);
+	-ms-transform: translate(-50%, 3px);
+	transform: translate(-50%, 3px);
+	border-color: #fff transparent transparent transparent;
+	border-width: 8px 4px 0 4px;
+}
+.sns-group ul.balloon a .social-count::before {
+	-webkit-transform: translate(-50%, 5px);
+	-ms-transform: translate(-50%, 5px);
+	transform: translate(-50%, 5px);
+	border-color: #ccc transparent transparent transparent;
+	border-width: 4px 2px 0 2px;
+}
+.twitter .icon {
+	background-color: #55ACEE;
+}
+.facebook .icon {
+	background-color: #3C5A99;
+}
+.google-plus .icon {
+	background-color: #DD4B39;
+}
+.hatena .icon {
+	background-color: #3C7DD1;
+}
+.pocket .icon {
+	background-color: #EE4257;
+}
+.evernote .icon {
+	background-color: #51B125;
+}
+.feedly .icon {
+	background-color: #87BD33;
+}
