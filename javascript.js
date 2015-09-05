@@ -214,12 +214,12 @@ jQuery(function($) {
 
 				/**
 				 * todo: jQuery3.0より、
-				 * 		 .slideDown, .slideUp()はcssでdisplay:noneの要素に対して動作しなくなります。
+				 *       .slideDown, .slideUp()はcssでdisplay:noneの要素に対して動作しなくなります。
 				 * idea: css側でdisplay:noneにした$('#navi ul')にたいして、新たにcssでクラスを作り
-				 *		 header_menu.addClass("show");などで.showにdisplay:blockを入れることで表示
-				 *		 #navi ul(のli)にtop:50px;などのプロパティを入れておき、.show.slideUpでtop:0に。
-				 *		 .slideUpにtransition&opacityを仕込めばアニメーションします。
-				 *		 参考例: header_menu.addClass("show slideUp");
+				 *       header_menu.addClass("show");などで.showにdisplay:blockを入れることで表示
+				 *       #navi ul(のli)にtop:50px;などのプロパティを入れておき、.show.slideUpでtop:0に。
+				 *       .slideUpにtransition&opacityを仕込めばアニメーションします。
+				 *       参考例: header_menu.addClass("show slideUp");
 				 */
 
 				header_menu.slideDown();
