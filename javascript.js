@@ -188,6 +188,11 @@ jQuery(function($) {
 /////////////////////////////////
 // メニューボタンの開閉
 /////////////////////////////////
+
+/**
+ * 一部スクリプトを書き換えています。動作の内容は同じです。
+ */
+
 /*jQuery(document).ready(function() {
   jQuery('#mobile-menu-toggle').click(function(){
 	header_menu = jQuery('#navi ul');
@@ -206,6 +211,17 @@ jQuery(function($) {
 		$("#mobile-menu-toggle").on(click, function() {
 			var header_menu = $("#navi ul");
 			if (header_menu.is(":hidden")) {
+
+				/**
+				 * todo: jQuery3.0より、
+				 * 		 .slideDown, .slideUp()はcssでdisplay:noneの要素に対して動作しなくなります。
+				 * idea: css側でdisplay:noneにした$('#navi ul')にたいして、新たにcssでクラスを作り
+				 *		 header_menu.addClass("show");などで.showにdisplay:blockを入れることで表示
+				 *		 #navi ul(のli)にtop:50px;などのプロパティを入れておき、.show.slideUpでtop:0に。
+				 *		 .slideUpにtransition&opacityを仕込めばアニメーションします。
+				 *		 参考例: header_menu.addClass("show slideUp");
+				 */
+
 				header_menu.slideDown();
 			} else {
 				header_menu.slideUp();
@@ -327,7 +343,7 @@ function get_social_count_googleplus(url, selector) {
 	});
 }
 
-//はてなブックマークではてブ勝を取得
+//はてなブックマークではてブ数を取得
 function get_social_count_hatebu(url, selector) {
 	jQuery.ajax({
 		url: '//api.b.st-hatena.com/entry.count?callback=?',
@@ -387,10 +403,15 @@ function get_social_count_feedly(rss_url, selector) {
 	});
 }
 
-
 jQuery(function($) {
+
 	$(function() {
 		if (typeof social_count_config !== 'undefined') {
+
+			/**
+			 * social_count_configは別ファイルでwordpressローカル変数(?)になってます
+			 */
+
 			get_social_count_twitter(social_count_config.permalink, '.twitter-count');
 			get_social_count_facebook(social_count_config.permalink, '.facebook-count');
 			get_social_count_googleplus(social_count_config.permalink, '.googleplus-count');
@@ -400,9 +421,15 @@ jQuery(function($) {
 		}
 
 		if (typeof lazyload_config !== 'undefined') {
+
+			/**
+			 * lazyload_configは別ファイルでwordpressローカル変数(?)になってます
+			 */
+
 			$('img').lazyload(lazyload_config);
 		}
 	});
+
 });
 
 jQuery(function($) {
@@ -424,11 +451,11 @@ jQuery(function($) {
 		}
 	});
 });
+
 ///////////////////////////////////
 // レスポンス表示時のメニューの挙動
 // メニューのスタイル表示崩れの防止
 ///////////////////////////////////
-
 jQuery(function($) {
 	$(function() {
 		$(window).resize(function() {
