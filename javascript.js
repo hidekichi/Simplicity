@@ -1,7 +1,7 @@
 /////////////////////////////////
 //TOPへ戻るボタン
 /////////////////////////////////
-jQuery(function($){
+jQuery(function($) {
 	$(window).scroll(function() {
 		//最上部から現在位置までの距離を取得して、変数[now]に格納
 		var now = $(window).scrollTop(),
@@ -31,30 +31,30 @@ jQuery(function($){
 	});
 });
 
-jQuery(function($){
-/////////////////////////////////
-//スクロール追従
-/////////////////////////////////
-var wrapperTop; //追従エリアのトップ位置を格納（追従開始位置
-var wrapperHeight; //追従エリアの高さを格納
-var sidebarHeight; //サイドバーの高さを格納
+jQuery(function($) {
+	/////////////////////////////////
+	//スクロール追従
+	/////////////////////////////////
+	var wrapperTop; //追従エリアのトップ位置を格納（追従開始位置
+	var wrapperHeight; //追従エリアの高さを格納
+	var sidebarHeight; //サイドバーの高さを格納
 
-//非同期ブログパーツがあっても追従開始位置がずれないように修正（無理やり）
-//スマートな良い方法があれば、ご教授お願いします。
+	//非同期ブログパーツがあっても追従開始位置がずれないように修正（無理やり）
+	//スマートな良い方法があれば、ご教授お願いします。
 
-/*
- *	A. 	var target = $(target_selector);
- *		var changeHeight = target.clientHeight;
- *		// もしブログパーツがフッターのであれば
- *		var watchTarget = $("#footer"); //たいていはcontainerなどでやることが多いみたいです
- *		watchTarget.style.height = changeHeight + "px";
- */
-function getScrollAreaSettings() {
-	wrapperHeight = $('#sidebar-scroll').outerHeight();
-	sidebarHeight = $('#sidebar').outerHeight();
-	wrapperTop = sidebarHeight - wrapperHeight + 240;
-}
-setInterval(getScrollAreaSettings(), 2000);
+	/*
+	 *	A. 	var target = $(target_selector);
+	 *		var changeHeight = target.clientHeight;
+	 *		// もしブログパーツがフッターのであれば
+	 *		var watchTarget = $("#footer"); //たいていはcontainerなどでやることが多いみたいです
+	 *		watchTarget.style.height = changeHeight + "px";
+	 */
+	function getScrollAreaSettings() {
+		wrapperHeight = $('#sidebar-scroll').outerHeight();
+		sidebarHeight = $('#sidebar').outerHeight();
+		wrapperTop = sidebarHeight - wrapperHeight + 240;
+	}
+	setInterval(getScrollAreaSettings(), 2000);
 
 	$(function() {
 		/*
@@ -388,7 +388,7 @@ function get_social_count_feedly(rss_url, selector) {
 }
 
 
-jQuery(function($){
+jQuery(function($) {
 	$(function() {
 		if (typeof social_count_config !== 'undefined') {
 			get_social_count_twitter(social_count_config.permalink, '.twitter-count');
@@ -405,7 +405,7 @@ jQuery(function($){
 	});
 });
 
-jQuery(function($){
+jQuery(function($) {
 	function doMasonry() {
 		$('#list').masonry({ //<!-- #listは記事一覧を囲んでる部分 -->
 			itemSelector: '.entry', //<!--.entryは各記事を囲んでる部分-->
@@ -429,7 +429,7 @@ jQuery(function($){
 // メニューのスタイル表示崩れの防止
 ///////////////////////////////////
 
-jQuery(function($){
+jQuery(function($) {
 	$(function() {
 		$(window).resize(function() {
 			if ($(window).width() > 1110) {
@@ -442,7 +442,7 @@ jQuery(function($){
 ///////////////////////////////////
 // Facebookページいいねエリアのリサイズ（Androidブラウザ対応用）
 ///////////////////////////////////
-jQuery(function($){
+jQuery(function($) {
 	function adjast_article_like_arrow_box() {
 		var w = $('#main').width(),
 			ws = $('#sidebar').width();
