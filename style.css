@@ -14,7 +14,10 @@ body {
 	font-family: 'Lucida Grande', 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;
 }
 
-/*redesign sns*/
+/**
+ * re design sns share button
+ * re build html need.
+ */
 
 .sns-group ul {
 	display: -webkit-box;
