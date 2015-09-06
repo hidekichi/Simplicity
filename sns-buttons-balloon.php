@@ -78,7 +78,7 @@
 		 */
 		if ( is_google_plus_btn_visible() ):
 	?>
-		<li class="google-plus">
+		<li class="googleplus">
 			<a
 				href        = "//plus.google.com/share?url=<?php echo rawurlencode(get_permalink($post->ID)); ?>"
 				onclick     = "javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;"
