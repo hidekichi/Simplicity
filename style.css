@@ -215,6 +215,10 @@ body {
   margin-left: 0.25rem;
   content: "Feedly";
 }
+.sns-group.viral ul .comment .icon span::after {
+  margin-left: 0.25rem;
+  content: "Comment";
+}
 .sns-group.viral ul li {
   height: 55px;
   position: relative;
@@ -300,4 +304,7 @@ body {
 }
 .feedly .icon {
 	background-color: #87BD33;
+}
+.comment .icon {
+	background-color: #000;
 }
