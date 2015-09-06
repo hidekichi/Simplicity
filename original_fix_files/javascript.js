@@ -2,7 +2,7 @@
 //TOPへ戻るボタン
 /////////////////////////////////
 jQuery(function($) {
-	$(window).scroll(function() {
+	$(window).on("scroll", function() {
 		//最上部から現在位置までの距離を取得して、変数[now]に格納
 		var now = $(window).scrollTop(),
 			pageTop = $("#page-top");
@@ -80,21 +80,21 @@ jQuery(function($) {
 			return;
 		}
 
-		var w = $(window);
-		wrapperHeight = wrapper.outerHeight();
-		wrapperTop = wrapper.offset().top; //とりあえずドキュメントを読み込んだ時点でスクロール追従領域の高さを取得
+		var w = $(window),
+			wrapperHeight = wrapper.outerHeight(),
+			wrapperTop = wrapper.offset().top; //とりあえずドキュメントを読み込んだ時点でスクロール追従領域の高さを取得
 		var sideLeft = side.offset().left;
-		//console.log(wrapperTop);
 
-		var sideMargin = {
-			top: side.css('margin-top') ? side.css('margin-top') : 0,
-			right: side.css('margin-right') ? side.css('margin-right') : 0,
-			bottom: side.css('margin-bottom') ? side.css('margin-bottom') : 0,
-			left: side.css('margin-left') ? side.css('margin-left') : 0
-		};
+		var	sideMargin = {
+				top: side.css('margin-top') ? side.css('margin-top') : 0,
+				right: side.css('margin-right') ? side.css('margin-right') : 0,
+				bottom: side.css('margin-bottom') ? side.css('margin-bottom') : 0,
+				left: side.css('margin-left') ? side.css('margin-left') : 0
+			};
 
 		var winLeft,
 			pos;
+		//console.log(wrapperTop);
 
 		var scrollAdjust = function() {
 			/*
@@ -102,14 +102,13 @@ jQuery(function($) {
 			 *	   ファンクションの中ですし、ローカル変数かなとは思うんですが、ここらで若干
 			 *	   warningが出ています。
 			 */
-			sideHeight = side.outerHeight();
-			mainHeight = main.outerHeight();
-			mainAbs = main.offset().top + mainHeight;
-			var winTop = w.scrollTop() + side_top_margin;
-			winLeft = w.scrollLeft();
-			var winHeight = w.height();
-
-			var nf = (winTop > wrapperTop) && (mainHeight > sideHeight) ? true : false;
+			var sideHeight = side.outerHeight(),
+				mainHeight = main.outerHeight(),
+				mainAbs = main.offset().top + mainHeight,
+				winTop = w.scrollTop() + side_top_margin,
+				winLeft = w.scrollLeft(),
+				winHeight = w.height(),
+				nf = (winTop > wrapperTop) && (mainHeight > sideHeight) ? true : false;
 
 			pos = !nf ? 'static' : (winTop + wrapperHeight) > mainAbs ? 'absolute' : 'fixed';
 
@@ -283,7 +282,7 @@ jQuery(function($) {
 var count;
 
 function outputSelector(selector, count) {
-	jQuery(selector).text(count);
+	jQuery(selector).empty().append(count);
 }
 
 // Twitterのシェア数を取得
@@ -314,7 +313,7 @@ function get_social_count_facebook(url, selector) {
 		},
 		success: function(res) {
 			count = res.shares || 0;
-			outputSelector(selector, 0);
+			outputSelector(selector, count);
 		},
 		error: function() {
 			outputSelector(selector, 0);
@@ -377,7 +376,7 @@ function get_social_count_pocket(url, selector) {
 			var match = content.match(/<em id="cnt">(\d+)<\/em>/i);
 			var count = (match !== null) ? match[1] : 0;
 
-			outputSelector(selector, 0);
+			outputSelector(selector, count);
 		}
 	});
 }
