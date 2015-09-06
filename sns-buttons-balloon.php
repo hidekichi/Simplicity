@@ -85,7 +85,7 @@
 				target      = "blank"
 				rel         = "nofollow">
 				<span class="icon">
-					<span class="icon-google-plus"></span>
+					<span class="icon-googleplus"></span>
 				</span>
 			</a>
 			<a

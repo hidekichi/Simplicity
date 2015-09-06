@@ -133,53 +133,153 @@ body {
 	border-color: transparent #ccc transparent transparent;
 	border-width: 2px 4px 2px 0;
 }
-.sns-group ul.balloon li {
+.sns-group.balloon ul.balloon li {
 	height: 80px;
 	-webkit-flex-flow: column wrap;
 	-ms-flex-flow: column wrap;
 	flex-flow: column wrap;
 }
-.sns-group ul.balloon a:first-child {
+.sns-group.balloon ul.balloon a:first-child {
 	-webkit-box-ordinal-group: 3;
 	-webkit-order: 2;
 	-ms-flex-order: 2;
 	order: 2;
 }
-.sns-group ul.balloon a:last-child {
+.sns-group.balloon ul.balloon a:last-child {
 	-webkit-box-ordinal-group: 2;
 	-webkit-order: 1;
 	-ms-flex-order: 1;
 	order: 1;
 }
-.sns-group ul.balloon a .icon {
+.sns-group.balloon ul.balloon a .icon {
 	width: 100%;
 	height: 35px;
 	line-height: 35px;
 }
-.sns-group ul.balloon a .social-count {
+.sns-group.balloon ul.balloon a .social-count {
 	width: 100%;
 	height: 35px;
 	line-height: 33px;
 }
-.sns-group ul.balloon a .social-count::before, .sns-group ul.balloon a .social-count::after {
+.sns-group.balloon ul.balloon a .social-count::before, .sns-group.balloon ul.balloon a .social-count::after {
 	top: initial;
 	bottom: 0;
 	left: 50%;
 }
-.sns-group ul.balloon a .social-count::after {
+.sns-group.balloon ul.balloon a .social-count::after {
 	-webkit-transform: translate(-50%, 3px);
 	-ms-transform: translate(-50%, 3px);
 	transform: translate(-50%, 3px);
 	border-color: #fff transparent transparent transparent;
 	border-width: 8px 4px 0 4px;
 }
-.sns-group ul.balloon a .social-count::before {
+.sns-group.balloon ul.balloon a .social-count::before {
 	-webkit-transform: translate(-50%, 5px);
 	-ms-transform: translate(-50%, 5px);
 	transform: translate(-50%, 5px);
 	border-color: #ccc transparent transparent transparent;
 	border-width: 4px 2px 0 2px;
 }
+
+.sns-group.viral ul {
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+.sns-group.viral ul .twitter .icon span::after {
+  margin-left: 0.25rem;
+  content: "Twitter";
+}
+.sns-group.viral ul .facebook .icon span::after {
+  margin-left: 0.25rem;
+  content: "Facebook";
+}
+.sns-group.viral ul .googleplus .icon span::after {
+  margin-left: 0.25rem;
+  content: "Google+";
+}
+.sns-group.viral ul .hatena .icon span::after {
+  margin-left: 0.25rem;
+  content: "Hatebu";
+}
+.sns-group.viral ul .pocket .icon span::after {
+  margin-left: 0.25rem;
+  content: "Pocket";
+}
+.sns-group.viral ul .evernote .icon span::after {
+  margin-left: 0.25rem;
+  content: "Evernote";
+}
+.sns-group.viral ul .feedly .icon span::after {
+  margin-left: 0.25rem;
+  content: "Feedly";
+}
+.sns-group.viral ul li {
+  height: 55px;
+  position: relative;
+  width: initial;
+  min-width: 120px;
+  display: block;
+  margin-right: 0;
+  margin-bottom: 0;
+  margin: 0 !important;
+  padding: 3px;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1 1 auto;
+      -ms-flex: 1 1 auto;
+          flex: 1 1 auto;
+}
+@media screen and (max-width: 440px) {
+  .sns-group.viral ul li {
+    width: 100%;
+  }
+}
+.sns-group.viral ul li .icon {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+.sns-group.viral ul li .icon span {
+  top: 50%;
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  text-align: initial;
+  width: auto;
+  -webkit-transform: translate(-2.75em, 0);
+      -ms-transform: translate(-2.75em, 0);
+          transform: translate(-2.75em, 0);
+}
+.sns-group.viral ul li .social-count {
+  position: absolute;
+  width: 100%;
+  height: 14px;
+  top: initial;
+  right: 0;
+  bottom: 10px;
+  line-height: 14px;
+  border: none;
+  background-color: transparent;
+  text-align: right;
+  color: #FFF;
+  padding-right: 10px;
+}
+.sns-group.viral ul li .social-count span {
+	position: absolute;
+    width: auto;
+    height: 14px;
+    top: initial;
+    right: 10px;
+    bottom: 0;
+    line-height: 14px;
+    color: #FFF;
+}
+.sns-group.viral ul li .social-count::before, .sns-group.viral ul li .social-count::after {
+  content: "";
+  border: none;
+}
+
 .twitter .icon {
 	background-color: #55ACEE;
 }
