@@ -2,7 +2,7 @@
  * TOPへ戻るボタン
  */
 
-jQuery(function($) {
+(function($){
 
 	$(window).on("scroll", function() {
 		//最上部から現在位置までの距離を取得して、変数[now]に格納
@@ -25,21 +25,22 @@ jQuery(function($) {
 
 	//ボタン(id:move-page-top)のクリックイベント
 	// クリックでページトップへ移動する
-	$('#move-page-top').on('click', function() {
-		$('body,html')
-			.animate({
+	$(function(){
+		$("#page-top").on("click", function () {
+			$("body,html").animate({
 				scrollTop: 0
-			}, 800);
+			}, 600);
+		});
 	});
 
-});
+})(jQuery);
 
 
 /**
  * スクロール追従
  */
 
-jQuery(function($) {
+(function($) {
 
 	var wrapperTop; //追従エリアのトップ位置を格納（追従開始位置
 	var wrapperHeight; //追従エリアの高さを格納
@@ -190,7 +191,7 @@ jQuery(function($) {
 		w.on('resize', resizeAdjust);
 	});
 
-});
+})(jQuery);
 
 
 /**
@@ -211,7 +212,7 @@ jQuery(function($) {
 
 });*/
 
-jQuery(function($) {
+(function($) {
 
 	$(function() {
 
@@ -249,17 +250,17 @@ jQuery(function($) {
 
 	});
 
-});
+})(jQuery);
 
 
 /**
  * ソーシャルボタンカウントの非同期取得
  */
 
-jQuery(function($) {
+(function($) {
 
 	var sharebar = $('#sharebar'),
-		main     = $('#main');
+		main = $('#main');
 
 	$(window).on("scroll", function() {
 		//console.log($('#sidebar').css('clear'));
@@ -271,10 +272,10 @@ jQuery(function($) {
 		}
 
 		var sharebar_top = sharebar.offset().top,
-		    sharebar_h   = sharebar.outerHeight(),
-		    main_top     = main.offset().top,
-		    main_h       = main.outerHeight(),
-		    bottom_line  = main_h - 400;
+			sharebar_h = sharebar.outerHeight(),
+			main_top = main.offset().top,
+			main_h = main.outerHeight(),
+			bottom_line = main_h - 400;
 
 		if (now < (main_h - sharebar_h)) {
 
@@ -302,7 +303,7 @@ jQuery(function($) {
 		}
 		//console.log(sharebar_h);
 	});
-});
+})(jQuery);
 
 var count;
 
@@ -319,15 +320,15 @@ function get_social_count_twitter(url, selector) {
 		data: {
 			url: url
 		}
-	}).done(function(res){
+	}).done(function(res) {
 
 		count = res.count || 0;
 		outputSelector(selector, count);
 
-	}).fail(function(jqXHR, textStatus, errorThrown){
+	}).fail(function(jqXHR, textStatus, errorThrown) {
 
 		outputSelector(selector, "error");
-		console.log("twitter_count_error:",textStatus + " | " + errorThrown.message);
+		console.log("twitter_count_error:", textStatus + " | " + errorThrown.message);
 
 	});
 }
@@ -340,15 +341,15 @@ function get_social_count_facebook(url, selector) {
 		data: {
 			id: url
 		}
-	}).done(function(res){
+	}).done(function(res) {
 
 		count = res.count || 0;
 		outputSelector(selector, count);
 
-	}).fail(function(jqXHR, textStatus, errorThrown){
+	}).fail(function(jqXHR, textStatus, errorThrown) {
 
 		outputSelector(selector, "error");
-		console.log("facebook_count_error:",textStatus + " | " + errorThrown.message);
+		console.log("facebook_count_error:", textStatus + " | " + errorThrown.message);
 
 	});
 }
@@ -364,7 +365,7 @@ function get_social_count_googleplus(url, selector) {
 			format: "xml",
 			env: "http://datatables.org/alltables.env"
 		}
-	}).done(function(data){
+	}).done(function(data) {
 
 		var content = jQuery(data).find("content").text();
 		var match = content.match(/window\.__SSR[\s*]=[\s*]{c:[\s*](\d+)/i);
@@ -372,10 +373,10 @@ function get_social_count_googleplus(url, selector) {
 
 		outputSelector(selector, count);
 
-	}).fail(function(jqXHR, textStatus, errorThrown){
+	}).fail(function(jqXHR, textStatus, errorThrown) {
 
 		outputSelector(selector, "error");
-		console.log("google+_count_error:",textStatus + " | " + errorThrown.message);
+		console.log("google+_count_error:", textStatus + " | " + errorThrown.message);
 
 	});
 }
@@ -388,15 +389,15 @@ function get_social_count_hatebu(url, selector) {
 		data: {
 			url: url
 		}
-	}).done(function(res){
+	}).done(function(res) {
 
 		count = res || 0;
 		outputSelector(selector, count);
 
-	}).fail(function(jqXHR, textStatus, errorThrown){
+	}).fail(function(jqXHR, textStatus, errorThrown) {
 
 		outputSelector(selector, "error");
-		console.log("hatena_count_error",textStatus + " | " + errorThrown.message);
+		console.log("hatena_count_error", textStatus + " | " + errorThrown.message);
 
 	});
 }
@@ -412,7 +413,7 @@ function get_social_count_pocket(url, selector) {
 			format: "xml",
 			env: "http://datatables.org/alltables.env"
 		}
-	}).done(function(data){
+	}).done(function(data) {
 
 		var content = jQuery(data).find("content").text();
 		var match = content.match(/<em id="cnt">(\d+)<\/em>/i);
@@ -420,10 +421,10 @@ function get_social_count_pocket(url, selector) {
 
 		outputSelector(selector, count);
 
-	}).fail(function(jqXHR, textStatus, errorThrown){
+	}).fail(function(jqXHR, textStatus, errorThrown) {
 
 		outputSelector(selector, "error");
-		console.log("pocket_count_error",textStatus + " | " + errorThrown.message);
+		console.log("pocket_count_error", textStatus + " | " + errorThrown.message);
 
 	});
 }
@@ -440,29 +441,29 @@ function get_social_count_feedly(rss_url, selector) {
 			format: "json",
 			env: "http://datatables.org/alltables.env"
 		}
-	}).done(function(data){
+	}).done(function(data) {
 
 		count = data.query.results.resources.content.json.subscribers;
 
 		outputSelector(selector, count);
 
-	}).fail(function(jqXHR, textStatus, errorThrown){
+	}).fail(function(jqXHR, textStatus, errorThrown) {
 
 		outputSelector(selector, "error");
-		console.log("feedly_count_error",textStatus + " | " + errorThrown.message);
+		console.log("feedly_count_error", textStatus + " | " + errorThrown.message);
 
 	});
 }
 
 // ajax動作元
-jQuery(function($) {
+(function($) {
 
-	$(function() {
-
-	/**
-	 * social_count_config、lazyload_configは別ファイル(header-javascript.php?)で
-	 * wordpressローカル変数(?)になってます
-	 */
+	//$(function() {
+	$(window).on("load", function(){
+		/**
+		 * social_count_config、lazyload_configは別ファイル(header-javascript.php?)で
+		 * wordpressローカル変数(?)になってます
+		 */
 
 		if (typeof social_count_config !== 'undefined') {
 
@@ -482,7 +483,7 @@ jQuery(function($) {
 
 	});
 
-});
+})(jQuery);
 
 
 /**
@@ -494,7 +495,7 @@ jQuery(function($) {
  *     isAnimated: true -> アニメーションON
  */
 
-jQuery(function($) {
+(function($) {
 
 	function doMasonry() {
 		$('#list').masonry({
@@ -515,7 +516,7 @@ jQuery(function($) {
 		}
 	});
 
-});
+})(jQuery);
 
 
 /**
@@ -523,7 +524,7 @@ jQuery(function($) {
  * メニューのスタイル表示崩れの防止
  */
 
-jQuery(function($) {
+(function($) {
 
 	$(function() {
 
@@ -535,14 +536,14 @@ jQuery(function($) {
 
 	});
 
-});
+})(jQuery);
 
 
 /**
  * Facebookページいいねエリアのリサイズ（Androidブラウザ対応用）
  */
 
-jQuery(function($) {
+(function($) {
 
 	function adjast_article_like_arrow_box() {
 		var w = $('#main').width(),
@@ -560,4 +561,4 @@ jQuery(function($) {
 		adjast_article_like_arrow_box();
 	});
 
-});
+})(jQuery);
