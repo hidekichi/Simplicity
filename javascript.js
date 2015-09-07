@@ -1,8 +1,10 @@
-/////////////////////////////////
-//TOPへ戻るボタン
-/////////////////////////////////
-jQuery(function($) {
-	$(window).scroll(function() {
+/**
+ * TOPへ戻るボタン
+ */
+
+(function($){
+
+	$(window).on("scroll", function() {
 		//最上部から現在位置までの距離を取得して、変数[now]に格納
 		var now = $(window).scrollTop(),
 			pageTop = $("#page-top");
@@ -12,7 +14,7 @@ jQuery(function($) {
 			//[#page-top]をゆっくりフェードインする
 			pageTop.fadeIn('slow');
 
-			//それ以外だったらフェードアウトする
+		//それ以外だったらフェードアウトする
 		} else {
 
 			pageTop.fadeOut('slow');
@@ -22,19 +24,24 @@ jQuery(function($) {
 	});
 
 	//ボタン(id:move-page-top)のクリックイベント
-	$('#move-page-top').on('click', function() {
-		//ページトップへ移動する
-		$('body,html')
-			.animate({
+	// クリックでページトップへ移動する
+	$(function(){
+		$("#page-top").on("click", function () {
+			$("body,html").animate({
 				scrollTop: 0
-			}, 800);
+			}, 600);
+		});
 	});
-});
 
-jQuery(function($) {
-	/////////////////////////////////
-	//スクロール追従
-	/////////////////////////////////
+})(jQuery);
+
+
+/**
+ * スクロール追従
+ */
+
+(function($) {
+
 	var wrapperTop; //追従エリアのトップ位置を格納（追従開始位置
 	var wrapperHeight; //追従エリアの高さを格納
 	var sidebarHeight; //サイドバーの高さを格納
@@ -80,11 +87,10 @@ jQuery(function($) {
 			return;
 		}
 
-		var w = $(window);
-		wrapperHeight = wrapper.outerHeight();
-		wrapperTop = wrapper.offset().top; //とりあえずドキュメントを読み込んだ時点でスクロール追従領域の高さを取得
-		var sideLeft = side.offset().left;
-		//console.log(wrapperTop);
+		var w = $(window),
+		    wrapperHeight = wrapper.outerHeight(),
+		    sideLeft      = side.offset().left,
+		    wrapperTop    = wrapper.offset().top; //とりあえずドキュメントを読み込んだ時点でスクロール追従領域の高さを取得
 
 		var sideMargin = {
 			top: side.css('margin-top') ? side.css('margin-top') : 0,
@@ -95,21 +101,22 @@ jQuery(function($) {
 
 		var winLeft,
 			pos;
+		//console.log(wrapperTop);
 
 		var scrollAdjust = function() {
 			/*
 			 *	Q. sideHeight,mainHeight,mainAbs ってグローバル変数?
 			 *	   ファンクションの中ですし、ローカル変数かなとは思うんですが、ここらで若干
 			 *	   warningが出ています。
+			 *	A. 2015/09/07 修正
 			 */
-			sideHeight = side.outerHeight();
-			mainHeight = main.outerHeight();
-			mainAbs = main.offset().top + mainHeight;
-			var winTop = w.scrollTop() + side_top_margin;
-			winLeft = w.scrollLeft();
-			var winHeight = w.height();
-
-			var nf = (winTop > wrapperTop) && (mainHeight > sideHeight) ? true : false;
+			var sideHeight = side.outerHeight(),
+			    mainHeight = main.outerHeight(),
+			    mainAbs    = main.offset().top + mainHeight,
+			    winTop     = w.scrollTop() + side_top_margin,
+			    winLeft    = w.scrollLeft(),
+			    winHeight  = w.height(),
+			    nf = (winTop > wrapperTop) && (mainHeight > sideHeight) ? true : false;
 
 			pos = !nf ? 'static' : (winTop + wrapperHeight) > mainAbs ? 'absolute' : 'fixed';
 
@@ -158,7 +165,7 @@ jQuery(function($) {
 				});
 
 			sideLeft = side.offset().left;
-			winLeft = w.scrollLeft();
+			winLeft  = w.scrollLeft();
 
 			if (pos === 'fixed') {
 				side
@@ -184,13 +191,13 @@ jQuery(function($) {
 		w.on('resize', resizeAdjust);
 	});
 
-});
-/////////////////////////////////
-// メニューボタンの開閉
-/////////////////////////////////
+})(jQuery);
+
 
 /**
- * 一部スクリプトを書き換えています。動作の内容は同じです。
+ * メニューボタンの開閉
+ *
+ *   -> 一部スクリプトを書き換えています。動作の内容は同じです
  */
 
 /*jQuery(document).ready(function() {
@@ -205,11 +212,21 @@ jQuery(function($) {
 
 });*/
 
-jQuery(function($) {
+(function($) {
+
 	$(function() {
+
+		/**
+		 * タッチ操作ができる端末で、反応速度を上げるため
+		 *
+		 *   端末がtouchstart可能な場合、clickをtouchstarに
+		 *   できない場合はclickを'click'で
+		 */
 		var click = ('ontouchstart' in document) ? 'touchstart' : 'click';
+
 		$("#mobile-menu-toggle").on(click, function() {
 			var header_menu = $("#navi ul");
+
 			if (header_menu.is(":hidden")) {
 
 				/**
@@ -223,20 +240,29 @@ jQuery(function($) {
 				 */
 
 				header_menu.slideDown();
+
 			} else {
+
 				header_menu.slideUp();
+
 			}
 		});
-	});
-});
 
-///////////////////////////////////
-// ソーシャルボタンカウントの非同期取得
-///////////////////////////////////
-jQuery(function($) {
+	});
+
+})(jQuery);
+
+
+/**
+ * ソーシャルボタンカウントの非同期取得
+ */
+
+(function($) {
+
 	var sharebar = $('#sharebar'),
 		main = $('#main');
-	$(window).scroll(function() {
+
+	$(window).on("scroll", function() {
 		//console.log($('#sidebar').css('clear'));
 		//最上部から現在位置までの距離を取得して、変数[now]に格納
 		var now = $(window).scrollTop();
@@ -248,9 +274,8 @@ jQuery(function($) {
 		var sharebar_top = sharebar.offset().top,
 			sharebar_h = sharebar.outerHeight(),
 			main_top = main.offset().top,
-			main_h = main.outerHeight();
-
-		var bottom_line = main_h - 400;
+			main_h = main.outerHeight(),
+			bottom_line = main_h - 400;
 
 		if (now < (main_h - sharebar_h)) {
 
@@ -278,7 +303,7 @@ jQuery(function($) {
 		}
 		//console.log(sharebar_h);
 	});
-});
+})(jQuery);
 
 var count;
 
@@ -293,14 +318,17 @@ function get_social_count_twitter(url, selector) {
 		dataType: 'jsonp',
 		data: {
 			url: url
-		},
-		success: function(res) {
-			count = res.count || 0;
-			outputSelector(selector, count);
-		},
-		error: function() {
-			outputSelector(selector, 0);
 		}
+	}).done(function(res) {
+
+		count = res.count || 0;
+		outputSelector(selector, count);
+
+	}).fail(function(jqXHR, textStatus, errorThrown) {
+
+		outputSelector(selector, "error");
+		console.log("twitter_count_error:", textStatus + " | " + errorThrown.message);
+
 	});
 }
 
@@ -311,14 +339,17 @@ function get_social_count_facebook(url, selector) {
 		dataType: 'jsonp',
 		data: {
 			id: url
-		},
-		success: function(res) {
-			count = res.shares || 0;
-			outputSelector(selector, 0);
-		},
-		error: function() {
-			outputSelector(selector, 0);
 		}
+	}).done(function(res) {
+
+		count = res.count || 0;
+		outputSelector(selector, count);
+
+	}).fail(function(jqXHR, textStatus, errorThrown) {
+
+		outputSelector(selector, "error");
+		console.log("facebook_count_error:", textStatus + " | " + errorThrown.message);
+
 	});
 }
 
@@ -332,14 +363,20 @@ function get_social_count_googleplus(url, selector) {
 			q: "SELECT content FROM data.headers WHERE url='https://plusone.google.com/_/+1/fastbutton?hl=ja&url=" + url + "' and ua='#Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.154 Safari/537.36'",
 			format: "xml",
 			env: "http://datatables.org/alltables.env"
-		},
-		success: function(data) {
-			var content = jQuery(data).find("content").text();
-			var match = content.match(/window\.__SSR[\s*]=[\s*]{c:[\s*](\d+)/i);
-			var count = (match !== null) ? match[1] : 0;
-
-			outputSelector(selector, count);
 		}
+	}).done(function(data) {
+
+		var content = jQuery(data).find("content").text();
+		var match = content.match(/window\.__SSR[\s*]=[\s*]{c:[\s*](\d+)/i);
+		var count = (match !== null) ? match[1] : 0;
+
+		outputSelector(selector, count);
+
+	}).fail(function(jqXHR, textStatus, errorThrown) {
+
+		outputSelector(selector, "error");
+		console.log("google+_count_error:", textStatus + " | " + errorThrown.message);
+
 	});
 }
 
@@ -350,14 +387,17 @@ function get_social_count_hatebu(url, selector) {
 		dataType: 'jsonp',
 		data: {
 			url: url
-		},
-		success: function(res) {
-			count = res || 0;
-			outputSelector(selector, count);
-		},
-		error: function() {
-			outputSelector(selector, 0);
 		}
+	}).done(function(res) {
+
+		count = res || 0;
+		outputSelector(selector, count);
+
+	}).fail(function(jqXHR, textStatus, errorThrown) {
+
+		outputSelector(selector, "error");
+		console.log("hatena_count_error", textStatus + " | " + errorThrown.message);
+
 	});
 }
 
@@ -371,14 +411,20 @@ function get_social_count_pocket(url, selector) {
 			q: "SELECT content FROM data.headers WHERE url='https://widgets.getpocket.com/v1/button?label=pocket&count=vertical&v=1&url=" + url + "' and ua='#Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.154 Safari/537.36'",
 			format: "xml",
 			env: "http://datatables.org/alltables.env"
-		},
-		success: function(data) {
-			var content = jQuery(data).find("content").text();
-			var match = content.match(/<em id="cnt">(\d+)<\/em>/i);
-			var count = (match !== null) ? match[1] : 0;
-
-			outputSelector(selector, 0);
 		}
+	}).done(function(data) {
+
+		var content = jQuery(data).find("content").text();
+		var match = content.match(/<em id="cnt">(\d+)<\/em>/i);
+		var count = (match !== null) ? match[1] : 0;
+
+		outputSelector(selector, count);
+
+	}).fail(function(jqXHR, textStatus, errorThrown) {
+
+		outputSelector(selector, "error");
+		console.log("pocket_count_error", textStatus + " | " + errorThrown.message);
+
 	});
 }
 
@@ -393,19 +439,25 @@ function get_social_count_feedly(rss_url, selector) {
 			q: "SELECT content FROM data.headers WHERE url='//cloud.feedly.com/v3/feeds/feed%2F" + encodeURIComponent(rss_url) + "' and ua='#Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.154 Safari/537.36'",
 			format: "json",
 			env: "http://datatables.org/alltables.env"
-		},
-		success: function(data) {
-			//console.log(data);
-			count = data.query.results.resources.content.json.subscribers;
-
-			outputSelector(selector, count);
 		}
+	}).done(function(data) {
+
+		count = data.query.results.resources.content.json.subscribers;
+
+		outputSelector(selector, count);
+
+	}).fail(function(jqXHR, textStatus, errorThrown) {
+
+		outputSelector(selector, "error");
+		console.log("feedly_count_error", textStatus + " | " + errorThrown.message);
+
 	});
 }
 
-jQuery(function($) {
 
-	$(function() {
+(function($) {
+
+	$(window).on("load", function(){
 		if (typeof social_count_config !== 'undefined') {
 
 			/**
@@ -430,46 +482,67 @@ jQuery(function($) {
 		}
 	});
 
-});
+})(jQuery);
 
-jQuery(function($) {
+/**
+ * doMasonry関係
+ *
+ *   doMasonry()
+ *      #listは記事一覧を囲んでる部分
+ *     .entryは各記事を囲んでる部分
+ *     isAnimated: true -> アニメーションON
+ */
+
+(function($) {
+
 	function doMasonry() {
-		$('#list').masonry({ //<!-- #listは記事一覧を囲んでる部分 -->
-			itemSelector: '.entry', //<!--.entryは各記事を囲んでる部分-->
-			isAnimated: true //<!--アニメーションON-->
+		$('#list').masonry({
+			itemSelector: '.entry',
+			isAnimated: true
 		});
 	}
 
-	$(window).load(function() {
+	$(window).on("load", function() {
 		if (typeof do_masonry !== 'undefined') {
 			doMasonry();
 		}
 	});
-	$(function() {
-		if (typeof do_masonry !== 'undefined') {
-			doMasonry();
-		}
-	});
-});
 
-///////////////////////////////////
-// レスポンス表示時のメニューの挙動
-// メニューのスタイル表示崩れの防止
-///////////////////////////////////
-jQuery(function($) {
 	$(function() {
-		$(window).resize(function() {
+		if (typeof do_masonry !== 'undefined') {
+			doMasonry();
+		}
+	});
+
+})(jQuery);
+
+
+/**
+ * レスポンス表示時のメニューの挙動
+ * メニューのスタイル表示崩れの防止
+ */
+
+(function($) {
+
+	$(function() {
+
+		$(window).on("resize", function() {
 			if ($(window).width() > 1110) {
 				$('#navi-in ul').removeAttr('style');
 			}
 		});
-	});
-});
 
-///////////////////////////////////
-// Facebookページいいねエリアのリサイズ（Androidブラウザ対応用）
-///////////////////////////////////
-jQuery(function($) {
+	});
+
+})(jQuery);
+
+
+/**
+ * Facebookページいいねエリアのリサイズ（Androidブラウザ対応用）
+ */
+
+(function($) {
+
 	function adjast_article_like_arrow_box() {
 		var w = $('#main').width(),
 			ws = $('#sidebar').width();
@@ -478,11 +551,12 @@ jQuery(function($) {
 		//console.log(w);
 	}
 
-	$(window).resize(function() {
+	$(window).on("resize", function() {
 		adjast_article_like_arrow_box();
 	});
 
-	$(document).ready(function() {
+	$(function() {
 		adjast_article_like_arrow_box();
 	});
-});
+
+})(jQuery);
