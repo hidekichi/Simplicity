@@ -60,12 +60,13 @@
 							/**
 							 * #条件
 							 *
-							 * scrollTopが、( footer.offset().top - #sidebar-scroll.offset().top )を超えた時か
+							 * footer.offset().topから追従エリアの高さを引いた座標よりscrollTopが小さい時
+							 * (つまりは追従エリアがfooterに達している場面よりも上にscrollTopがある時)、
 							 * [check]footer.offset().top - ( [check]追従エリア + footer上のマージン )よりscrollTopが大きい時
 							 *
 							 * これは、footerに追従エリアが到達して上に戻る時にfooterに追従エリアを張り付かせるためのものです
 							 * checkはスクリプト先頭の関数からその時のオフセット値を求めてます
-							 * スクロールごとにチェックするのでやり過ぎですが、追従エリアのサイズが変わった後、
+							 * スクロールごとにチェックするのでやり過ぎですが、追従エリアのサイズが非同期で変わった後、
 							 * 追従エリアがfooterを突き抜けることがあったため導入
 							 */
 
