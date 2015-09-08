@@ -1,7 +1,7 @@
 (function($){
 	/**
 	 *
-	 * follow scrool widget, wordpress theme Simplicty専用
+	 * follow scrool widget, wordpress theme Simplicity専用
 	 * ※ 使用時には助長なコメントは削除して下さい。説明用です。
 	 *
 	 * 2015/09/09 new
