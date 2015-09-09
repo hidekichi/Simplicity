@@ -60,6 +60,7 @@
 					// dummyのオフセットを調べてそれが変更されたら追従エリアの座標(top)に代入
 					//
 					if (dyOffset !== offsetCheck(dummy)){
+						dyOffset = offsetCheck(dummy);
 						flwAreaTop = dyOffset;
 					}
 
@@ -68,7 +69,7 @@
 					if ( mainHeight > flwAreaBottom ){
 
 						// scrollTopが追従エリアのoffsetTopを超えた時
-						if ( st > flwAreaTop ){
+						if ( st > dyOffset ){
 
 							/**
 							 * #条件
