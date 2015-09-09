@@ -30,6 +30,12 @@
 		    flwAreaTop    = followArea.get( 0 ).offsetTop,
 		    flwAreaBottom = flwAreaTop + flwAreaHeight;
 
+			//
+			// 追従エリアの前にdummyブロックを挿入
+			$(followArea).before("<div class='dummy'></div>");
+			var dummy     = $("#sidebar .dummy"),
+			    dyOffset  = dummy.get( 0 ).offsetTop;
+
 		/**
 		 * setTimeoutにて、0.2秒後に処理が行われるようにするためのtimerです
 		 * これがなければスクロールの最中も処理が行われるので、それを回避するため設置
@@ -49,6 +55,13 @@
 			timer = setTimeout(function(){
 
 				$(window).on("scroll", function(){
+
+					//
+					// dummyのオフセットを調べてそれが変更されたら追従エリアの座標(top)に代入
+					//
+					if (dyOffset !== offsetCheck(dummy)){
+						flwAreaTop = dyOffset;
+					}
 
 					var st = $(window).scrollTop();
 
@@ -114,7 +127,7 @@
 
 				});
 
-			},200); //settimeoutの時間 1000 = 1秒
+			},100); //settimeoutの時間 1000 = 1秒
 		}
 	});
 })(jQuery);
