@@ -23,7 +23,7 @@
 		//setting
 		var mainHeight    = $("#main").height(),
 		    sidebarWidth  = $("#sidebar").width(),
-		    ft            = $("footer"),
+		    ft            = $("#footer"),
 		    ftTop         = ft.get( 0 ).offsetTop,
 		    followArea    = $("#sidebar-scroll"),
 		    flwAreaHeight = followArea.outerHeight(),
