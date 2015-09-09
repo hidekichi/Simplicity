@@ -4,6 +4,7 @@
 	 * follow scrool widget, wordpress theme Simplicity専用
 	 * ※ 使用時には助長なコメントは削除して下さい。説明用です。
 	 *
+	 * 2015/09/09 23:18 今現在までにわかっている問題をすべて修正完了
 	 * 2015/09/09 new
 	 *
 	 */
@@ -28,7 +29,10 @@
 		    followArea    = $("#sidebar-scroll"),
 		    flwAreaHeight = followArea.outerHeight(),
 		    flwAreaTop    = followArea.get( 0 ).offsetTop,
-		    flwAreaBottom = flwAreaTop + flwAreaHeight;
+		    flwAreaBottom = flwAreaTop + flwAreaHeight,
+			ftTopMargin   = parseInt( $(ft).css('margin-top'), 10 ),
+			mBottomMargin = parseInt( $("#main").css('margin-bottom'), 10 ),
+			betweenMargin = ftTopMargin + mBottomMargin;
 
 			//
 			// 追従エリアの前にdummyブロックを挿入
@@ -84,12 +88,12 @@
 							 * 追従エリアがfooterを突き抜けることがあったため導入
 							 */
 
-							if (ftTop - flwAreaHeight < st || st > offsetCheck(ft) - (heightCheck(followArea) + 60) ) {
+							if (st > offsetCheck(ft) - (heightCheck(followArea) + betweenMargin) ) {
 
 								followArea.css({
 									position: "absolute",
 									width: sidebarWidth,
-									top: offsetCheck(ft) - ( heightCheck(followArea) + 60)
+									top: offsetCheck(ft) - ( heightCheck(followArea) + betweenMargin)
 								});
 
 							} else {
