@@ -19,6 +19,50 @@
 		return tgt.height();
 	}
 
+	/**
+	 * [bgColorCheck sidebarの背景に色が付いていた場合の処理をする関数]
+	 * @param  {[jQueryObject]} tgt [基本追従エリアのセレクタが入ります]
+	 * @return {[none]}     [関数で出力するため返り値なし]
+	 *
+	 * 追従エリアに適用するための、構成クラス.followingと色クラス.whiteBGが必要です
+	 *
+	 * .following {
+	 *   padding: 0px 8px 30px;  // sidebarのpaddingは[5px 8px]、#mainに合わせるため30px追加(topも必要かも)
+	 *   border-radius: 0 0 4px 4px; // 追従している間はトップに張り付いていると思うので上左・右のコーナー丸角は不要
+	 * }
+	 * .whiteBG {
+	 *   background-color: #fff;  // 追従エリアに入れる背景色
+	 *   border: 1px solid #ddd;  // それに伴うボーダー色
+	 * }
+	 *
+	 * 上記をstyle.cssに追記(whiteBGを別バージョンで作れば他の色背景にも対応可能)
+	 */
+	function bgColorCheck(tgt) {
+		var sidebar = $("#sidebar");
+
+		// sidebarの背景に色がついているかどうか
+		// 色がない = 透過されている状態
+		// 透過されている = sidebarに色を付けるがチェックされていない
+		if ( sidebar.css("background-color") !== "transparent"){
+
+			// style.cssに追記した汎用クラスを付けて、sidebarの横幅と座標(left)を揃える
+			tgt.addClass('following whiteBG')
+				.css({
+					"width": sidebar.outerWidth(),
+					"left": sidebar.offset().left
+				});
+
+		} else {
+
+			// sidebarに色を付けるがチェックされていない場合は、sidebarの横幅と座標(left)を揃えるだけ
+			tgt.css({
+					"width": sidebar.outerWidth(),
+					"left": sidebar.offset().left
+				});
+
+		}
+	}
+
 	$(function(){
 
 		//setting
@@ -34,7 +78,6 @@
 			mBottomMargin = parseInt( $("#main").css('margin-bottom'), 10 ),
 			betweenMargin = ftTopMargin + mBottomMargin;
 
-			//
 			// 追従エリアの前にdummyブロックを挿入
 			$(followArea).before("<div class='dummy'></div>");
 			var dummy     = $("#sidebar .dummy"),
@@ -60,7 +103,13 @@
 
 				$(window).on("load scroll", function(){
 
-					//
+					/**
+					 * sidebarの背景色をチェックする関数
+					 * @param  {jQueryObject} followArea [追従エリアに対して出力しますがsidebarをチェックします]
+					 * @return なし。直接出力            [関数にて直接出力。返り値なし]
+					 */
+					bgColorCheck(followArea);
+
 					// dummyのオフセットを調べてそれが変更されたら追従エリアの座標(top)に代入
 					//
 					if (dyOffset !== offsetCheck(dummy)){
@@ -92,7 +141,6 @@
 
 								followArea.css({
 									position: "absolute",
-									width: sidebarWidth,
 									top: offsetCheck(ft) - ( heightCheck(followArea) + betweenMargin)
 								});
 
@@ -105,7 +153,6 @@
 
 								followArea.css({
 									position:"fixed",
-									width: sidebarWidth,
 									top: 0
 								});
 
@@ -120,7 +167,9 @@
 							 * 特別に何も処理してません
 							 */
 
-							followArea.removeAttr("style");
+							followArea
+								.removeClass()
+								.removeAttr("style", "position top");
 						}
 
 					} else {
