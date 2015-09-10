@@ -2,9 +2,9 @@
  * TOPへ戻るボタン
  */
 
-(function($){
+(function($) {
 
-	$(window).on("scroll", function() {
+	$(window).on("load scroll", function() {
 		//最上部から現在位置までの距離を取得して、変数[now]に格納
 		var now = $(window).scrollTop(),
 			pageTop = $("#page-top");
@@ -14,7 +14,7 @@
 			//[#page-top]をゆっくりフェードインする
 			pageTop.fadeIn('slow');
 
-		//それ以外だったらフェードアウトする
+			//それ以外だったらフェードアウトする
 		} else {
 
 			pageTop.fadeOut('slow');
@@ -25,8 +25,8 @@
 
 	//ボタン(id:move-page-top)のクリックイベント
 	// クリックでページトップへ移動する
-	$(function(){
-		$("#page-top").on("click", function () {
+	$(function() {
+		$("#page-top").on("click", function() {
 			$("body,html").animate({
 				scrollTop: 0
 			}, 600);
@@ -41,156 +41,102 @@
  */
 
 (function($) {
-
-	var wrapperTop; //追従エリアのトップ位置を格納（追従開始位置
-	var wrapperHeight; //追従エリアの高さを格納
-	var sidebarHeight; //サイドバーの高さを格納
-
-	//非同期ブログパーツがあっても追従開始位置がずれないように修正（無理やり）
-	//スマートな良い方法があれば、ご教授お願いします。
-
-	/*
-	 *	A. 	var target = $(target_selector);
-	 *		var changeHeight = target.clientHeight;
-	 *		// もしブログパーツがフッターのであれば
-	 *		var watchTarget = $("#footer"); //たいていはcontainerなどでやることが多いみたいです
-	 *		watchTarget.style.height = changeHeight + "px";
+	/**
+	 *
+	 * follow scrool widget, wordpress theme Simplicity専用
+	 *
+	 * script by Hidekichi
+	 * http://blazechariot.wp.xdomain.jp/
+	 *
 	 */
-	function getScrollAreaSettings() {
-		wrapperHeight = $('#sidebar-scroll').outerHeight();
-		sidebarHeight = $('#sidebar').outerHeight();
-		wrapperTop = sidebarHeight - wrapperHeight + 240;
+
+	// オフセットを調べる関数
+	function offsetCheck(tgt) {
+		return tgt.get(0).offsetTop;
 	}
-	setInterval(getScrollAreaSettings(), 2000);
+
+	// heightを調べる関数
+	function heightCheck(tgt) {
+		return tgt.height();
+	}
 
 	$(function() {
-		/*
-		Ads Sidewinder
-		by Hamachiya2. http://d.hatena.ne.jp/Hamachiya2/20120820/adsense_sidewinder
-		*/
-		var main = $('#main'); // メインカラムのID
-		var side = $('#sidebar'); // サイドバーのID
-		var wrapper = $('#sidebar-scroll'); // スクロール追従要素のID
-		var side_top_margin = 60;
 
-		if (!wrapper.size()) {
-			return;
-		}
+		//setting
+		var mainHeight = $("#main").height(),
+			sidebarWidth = $("#sidebar").width(),
+			ft = $("#footer"),
+			ftTop = ft.get(0).offsetTop,
+			followArea = $("#sidebar-scroll"),
+			flwAreaHeight = followArea.outerHeight(),
+			flwAreaTop = followArea.get(0).offsetTop,
+			flwAreaBottom = flwAreaTop + flwAreaHeight,
+			ftTopMargin = parseInt($(ft).css('margin-top'), 10),
+			mBottomMargin = parseInt($("#main").css('margin-bottom'), 10),
+			betweenMargin = ftTopMargin + mBottomMargin;
 
-		//スクロール追従エリアにウイジェットが入っていないときはスルー
-		if (side.css('clear') === 'both') {
-			return;
-		}
+		$(followArea).before("<div class='dummy'></div>");
+		var dummy = $("#sidebar .dummy"),
+			dyOffset = dummy.get(0).offsetTop;
 
-		//レスポンシブでサイドバーをページ下に表示しているときはスルー
-		if (main.length === 0 || side.length === 0 || wrapper.length === 0) {
-			return;
-		}
+		var timer = false;
 
-		var w = $(window),
-		    wrapperHeight = wrapper.outerHeight(),
-		    sideLeft      = side.offset().left,
-		    wrapperTop    = wrapper.offset().top; //とりあえずドキュメントを読み込んだ時点でスクロール追従領域の高さを取得
+		if (window.innerWidth > 1050) {
 
-		var sideMargin = {
-			top: side.css('margin-top') ? side.css('margin-top') : 0,
-			right: side.css('margin-right') ? side.css('margin-right') : 0,
-			bottom: side.css('margin-bottom') ? side.css('margin-bottom') : 0,
-			left: side.css('margin-left') ? side.css('margin-left') : 0
-		};
-
-		var winLeft,
-			pos;
-		//console.log(wrapperTop);
-
-		var scrollAdjust = function() {
-			/*
-			 *	Q. sideHeight,mainHeight,mainAbs ってグローバル変数?
-			 *	   ファンクションの中ですし、ローカル変数かなとは思うんですが、ここらで若干
-			 *	   warningが出ています。
-			 *	A. 2015/09/07 修正
-			 */
-			var sideHeight = side.outerHeight(),
-			    mainHeight = main.outerHeight(),
-			    mainAbs    = main.offset().top + mainHeight,
-			    winTop     = w.scrollTop() + side_top_margin,
-			    winLeft    = w.scrollLeft(),
-			    winHeight  = w.height(),
-			    nf = (winTop > wrapperTop) && (mainHeight > sideHeight) ? true : false;
-
-			pos = !nf ? 'static' : (winTop + wrapperHeight) > mainAbs ? 'absolute' : 'fixed';
-
-			if (pos === 'fixed') {
-				side
-					.css({
-						position: pos,
-						top: '',
-						bottom: winHeight - wrapperHeight,
-						left: sideLeft - winLeft,
-						margin: 0,
-						marginBottom: '-' + side_top_margin + 'px'
-					});
-
-			} else if (pos === 'absolute') {
-				side
-					.css({
-						position: pos,
-						top: mainAbs - sideHeight,
-						bottom: '',
-						left: sideLeft,
-						margin: 0,
-						marginBottom: '-' + side_top_margin + 'px'
-					});
-
-			} else {
-				side
-					.css({
-						position: pos,
-						marginTop: sideMargin.top,
-						marginRight: sideMargin.right,
-						marginBottom: sideMargin.bottom,
-						marginLeft: sideMargin.left
-					});
+			if (timer !== false) {
+				clearTimeout(timer);
 			}
-		};
 
-		var resizeAdjust = function() {
-			side
-				.css({
-					position: 'static',
-					marginTop: sideMargin.top,
-					marginRight: sideMargin.right,
-					marginBottom: sideMargin.bottom,
-					marginLeft: sideMargin.left
+			timer = setTimeout(function() {
+
+				$(window).on("load scroll", function() {
+
+					if (dyOffset !== offsetCheck(dummy)) {
+						dyOffset = offsetCheck(dummy);
+						flwAreaTop = dyOffset;
+					}
+
+					var st = $(window).scrollTop();
+
+					if (mainHeight > flwAreaBottom) {
+
+						if (st > dyOffset) {
+
+							if (st > offsetCheck(ft) - (heightCheck(followArea) + betweenMargin)) {
+
+								followArea.css({
+									position: "absolute",
+									width: sidebarWidth,
+									top: offsetCheck(ft) - (heightCheck(followArea) + betweenMargin)
+								});
+
+							} else {
+
+								followArea.css({
+									position: "fixed",
+									width: sidebarWidth,
+									top: 0
+								});
+
+							}
+
+						} else {
+
+							followArea.removeAttr("style");
+						}
+
+					} else {
+						/**
+						 * もしメインの記事の高さがサイドバーよりも低い場合は、ここに何か書くことで
+						 * スクロールに伴う独自の処理を行えます
+						 */
+					}
+
 				});
 
-			sideLeft = side.offset().left;
-			winLeft  = w.scrollLeft();
-
-			if (pos === 'fixed') {
-				side
-					.css({
-						position: pos,
-						left: sideLeft - winLeft,
-						margin: 0,
-						marginBottom: '-' + side_top_margin + 'px'
-					});
-
-			} else if (pos === 'absolute') {
-				side
-					.css({
-						position: pos,
-						left: sideLeft,
-						margin: 0,
-						marginBottom: '-' + side_top_margin + 'px'
-					});
-			}
-		};
-
-		w.on('load scroll', scrollAdjust);
-		w.on('resize', resizeAdjust);
+			}, 100); //settimeoutの時間 1000 = 1秒
+		}
 	});
-
 })(jQuery);
 
 
@@ -459,7 +405,7 @@ function get_social_count_feedly(rss_url, selector) {
 (function($) {
 
 	//$(function() {
-	$(window).on("load", function(){
+	$(window).on("load", function() {
 		/**
 		 * social_count_config、lazyload_configは別ファイル(header-javascript.php?)で
 		 * wordpressローカル変数(?)になってます
