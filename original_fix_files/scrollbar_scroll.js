@@ -58,7 +58,7 @@
 
 			timer = setTimeout(function(){
 
-				$(window).on("scroll", function(){
+				$(window).on("load scroll", function(){
 
 					//
 					// dummyのオフセットを調べてそれが変更されたら追従エリアの座標(top)に代入
