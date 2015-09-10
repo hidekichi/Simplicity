@@ -343,7 +343,7 @@ function get_social_count_facebook(url, selector) {
 		}
 	}).done(function(res) {
 
-		count = res.count || 0;
+		count = res.shares || 0;
 		outputSelector(selector, count);
 
 	}).fail(function(jqXHR, textStatus, errorThrown) {
