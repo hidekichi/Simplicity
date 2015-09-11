@@ -40,30 +40,86 @@
  * スクロール追従
  */
 
-(function($) {
-	/**
-	 *
-	 * follow scrool widget, wordpress theme Simplicity専用
-	 *
-	 * script by Hidekichi
-	 * http://blazechariot.wp.xdomain.jp/
-	 *
-	 */
+ (function($) {
+ 	/**
+ 	 *
+ 	 * follow scrool widget, wordpress theme Simplicity専用
+ 	 * ※ 使用時には助長なコメントは削除して下さい。説明用です。
+ 	 *
+ 	 * 2015/09/12 背景色・フォントカラー回りの修正・追加
+ 	 * 2015/09/09 23:18 今現在までにわかっている問題をすべて修正完了
+ 	 * 2015/09/09 new
+ 	 *
+ 	 */
 
-	 // オフセットを調べる関数
- 	function offsetCheck(tgt){
- 		return tgt.get( 0 ).offsetTop;
+ 	// オフセットを調べる関数
+ 	function offsetCheck(tgt) {
+ 		return tgt.get(0).offsetTop;
  	}
 
  	// heightを調べる関数
- 	function heightCheck(tgt){
+ 	function heightCheck(tgt) {
  		return tgt.height();
  	}
 
  	/**
+ 	 * parseColor rgb(255,255,255)のような値から16進数の色を返します
+ 	 * @param  {string} rgb [rgb(r,g,b)]
+ 	 * @return {array}    [rgb(255,255,255)→(Array)["ff","ff","ff"]]
+ 	 */
+ 	function parseColor(rgb) {
+ 		var bgColor = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/),
+ 			color = [];
+ 		bgColor.splice(0, 1);
+
+ 		for (var i in bgColor) {
+ 			bgColor[i] = parseInt(bgColor[i]).toString(16);
+ 			if (bgColor[i].length === 1) {
+ 				bgColor[i] = "0" + bgColor[i];
+ 			}
+ 		}
+ 		//console.log("color: ", bgColor);
+
+ 		return bgColor;
+
+ 	}
+
+ 	/**
+ 	 * 入力された色より明度を調査して薄い色の場合は#333を濃い色の場合は#fffを返す関数
+ 	 *     背景色によっては読みにくくなる場合もある
+ 	 * @param  {array} rgb [(Array)[r,b,g] の形式で16進数 → ["ff","ff","ff"] ]
+ 	 * @return {string}     [description]
+ 	 *
+ 	 * http://qiita.com/fnobi/items/d3464ba0e4b6596863cb
+ 	 */
+ 	function colorBright(rgb) {
+
+ 		if (rgb.length > 0) {
+ 			//補正値
+ 			var mod = {
+ 				r: 0.9,
+ 				g: 0.8,
+ 				b: 0.4
+ 			};
+ 			var rmod = mod.r || 1,
+ 				gmod = mod.g || 1,
+ 				bmod = mod.b || 1,
+ 				bright = Math.max(rgb[0] * rmod, rgb[1] * gmod, rgb[2] * bmod) / 255;
+
+ 			if (bright > 0.5) {
+ 				return "#333";
+ 			} else {
+ 				return "#fff";
+ 			}
+ 		} else {
+ 			return false;
+ 		}
+ 	}
+
+ 	/**
  	 * [bgColorCheck sidebarの背景に色が付いていた場合の処理をする関数]
- 	 * @param  {[jQueryObject]} tgt [基本追従エリアのセレクタが入ります]
- 	 * @return {[none]}     [関数で出力するため返り値なし]
+ 	 * @param  {jQueryObject} tgt [基本追従エリアのセレクタが入ります]
+ 	 * @return {none}     [関数で出力するため返り値なし]
  	 *
  	 * 追従エリアに適用するための、構成クラス.followingと色クラス.whiteBGが必要です
  	 *
@@ -80,14 +136,25 @@
  	 */
  	function bgColorCheck(tgt) {
  		var sidebar = $("#sidebar");
+ 		var checkColor, fontColor,
+ 			isBgcolor = (sidebar.css("background-color") !== "transparent") ? true : false,
+ 			isFontcolor333 = (sidebar.find("h4").css("color") === "#333") ? true : false;
 
- 		// sidebarの背景に色がついているかどうか
- 		// 色がない = 透過されている状態
- 		// 透過されている = sidebarに色を付けるがチェックされていない
- 		if ( sidebar.css("background-color") !== "transparent"){
+ 		// サイドバー・追従エリアの文字色チェック
+ 		// .custom-backgroundが存在して、サイドバーのbackground-colorに色が着いていない場合に
+ 		// サイドバーのinputとa以外の文字にcolorBright()で判断した色を付ける
+ 		if ($(".custom-background").length > 0 && !isBgcolor) {
+ 			checkColor = parseColor($(".custom-background").css("background-color"));
+ 			fontColor = colorBright(checkColor);
 
- 			// style.cssに追記した汎用クラスを付けて、sidebarの横幅と座標(left)を揃える
- 			tgt.addClass('following whiteBG')
+ 			tgt.css("color", fontColor);
+ 			sidebar.find("*:not('a, input')").css("color", fontColor);
+ 		}
+
+ 		if (isBgcolor) {
+
+ 			tgt
+ 				.addClass('following whiteBG')
  				.css({
  					"width": sidebar.outerWidth(),
  					"left": sidebar.offset().left
@@ -95,34 +162,33 @@
 
  		} else {
 
- 			// sidebarに色を付けるがチェックされていない場合は、sidebarの横幅と座標(left)を揃えるだけ
  			tgt.css({
- 					"width": sidebar.outerWidth(),
- 					"left": sidebar.offset().left
- 				});
+ 				"width": sidebar.outerWidth(),
+ 				"left": sidebar.offset().left
+ 			});
 
  		}
  	}
 
- 	$(function(){
+ 	$(function() {
 
  		//setting
- 		var mainHeight    = $("#main").height(),
- 		    sidebarWidth  = $("#sidebar").width(),
- 		    ft            = $("#footer"),
- 		    ftTop         = ft.get( 0 ).offsetTop,
- 		    followArea    = $("#sidebar-scroll"),
- 		    flwAreaHeight = followArea.outerHeight(),
- 		    flwAreaTop    = followArea.get( 0 ).offsetTop,
- 		    flwAreaBottom = flwAreaTop + flwAreaHeight,
- 			ftTopMargin   = parseInt( $(ft).css('margin-top'), 10 ),
- 			mBottomMargin = parseInt( $("#main").css('margin-bottom'), 10 ),
+ 		var mainHeight = $("#main").height(),
+ 			sidebarWidth = $("#sidebar").width(),
+ 			ft = $("#footer"),
+ 			ftTop = ft.get(0).offsetTop,
+ 			followArea = $("#sidebar-scroll"),
+ 			flwAreaHeight = followArea.outerHeight(),
+ 			flwAreaTop = followArea.get(0).offsetTop,
+ 			flwAreaBottom = flwAreaTop + flwAreaHeight,
+ 			ftTopMargin = parseInt($(ft).css('margin-top'), 10),
+ 			mBottomMargin = parseInt($("#main").css('margin-bottom'), 10),
  			betweenMargin = ftTopMargin + mBottomMargin;
 
- 			// 追従エリアの前にdummyブロックを挿入
- 			$(followArea).before("<div class='dummy'></div>");
- 			var dummy     = $("#sidebar .dummy"),
- 			    dyOffset  = dummy.get( 0 ).offsetTop;
+ 		// 追従エリアの前にdummyブロックを挿入
+ 		$(followArea).before("<div class='dummy'></div>");
+ 		var dummy = $("#sidebar .dummy"),
+ 			dyOffset = dummy.get(0).offsetTop;
 
  		/**
  		 * setTimeoutにて、0.2秒後に処理が行われるようにするためのtimerです
@@ -136,34 +202,36 @@
  		 * wordpressローカル変数で、タブレットの時にデスクトップ表示の有無をチェックしても良いかも知れません
  		 */
 
- 		if (window.innerWidth > 1050){
+ 		if (window.innerWidth > 1050) {
 
- 			if (timer !== false ) { clearTimeout(timer); }
+ 			if (timer !== false) {
+ 				clearTimeout(timer);
+ 			}
 
- 			timer = setTimeout(function(){
+ 			timer = setTimeout(function() {
 
- 				$(window).on("load scroll", function(){
+ 				$(window).on("load scroll", function() {
 
  					/**
  					 * sidebarの背景色をチェックする関数
  					 * @param  {jQueryObject} followArea [追従エリアに対して出力しますがsidebarをチェックします]
- 					 * @return なし。直接出力            [関数にて直接出力。返り値なし]
+ 					 * @return {none}           [関数にて直接出力。返り値なし]
  					 */
  					bgColorCheck(followArea);
 
  					// dummyのオフセットを調べてそれが変更されたら追従エリアの座標(top)に代入
  					//
- 					if (dyOffset !== offsetCheck(dummy)){
+ 					if (dyOffset !== offsetCheck(dummy)) {
  						dyOffset = offsetCheck(dummy);
  						flwAreaTop = dyOffset;
  					}
 
  					var st = $(window).scrollTop();
 
- 					if ( mainHeight > flwAreaBottom ){
+ 					if (mainHeight > flwAreaBottom) {
 
  						// scrollTopが追従エリアのoffsetTopを超えた時
- 						if ( st > dyOffset ){
+ 						if (st > dyOffset) {
 
  							/**
  							 * #条件
@@ -178,11 +246,11 @@
  							 * 追従エリアがfooterを突き抜けることがあったため導入
  							 */
 
- 							if (st > offsetCheck(ft) - (heightCheck(followArea) + betweenMargin) ) {
+ 							if (st > offsetCheck(ft) - (heightCheck(followArea) + betweenMargin)) {
 
  								followArea.css({
  									position: "absolute",
- 									top: offsetCheck(ft) - ( heightCheck(followArea) + betweenMargin)
+ 									top: offsetCheck(ft) - (heightCheck(followArea) + betweenMargin)
  								});
 
  							} else {
@@ -193,7 +261,7 @@
  								 */
 
  								followArea.css({
- 									position:"fixed",
+ 									position: "fixed",
  									top: 0
  								});
 
@@ -222,10 +290,11 @@
 
  				});
 
- 			},100); //settimeoutの時間 1000 = 1秒
+ 			}, 100); //settimeoutの時間 1000 = 1秒
  		}
  	});
  })(jQuery);
+
 
 
 /**
