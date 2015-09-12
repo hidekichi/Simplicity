@@ -4,6 +4,7 @@
 	 * follow scrool widget, wordpress theme Simplicity専用
 	 * ※ 使用時には助長なコメントは削除して下さい。説明用です。
 	 *
+	 * 2015/09/12 色チェックの精度向上
 	 * 2015/09/09 23:18 今現在までにわかっている問題をすべて修正完了
 	 * 2015/09/09 new
 	 *
@@ -20,61 +21,56 @@
 	}
 
 	/**
-	 * parseColor rgb(255,255,255)のような値から16進数の色を返します
-	 * @param  {string} rgb [rgb(r,g,b)]
-	 * @return {array}    [rgb(255,255,255)→(Array)["ff","ff","ff"]]
+	 * 入力された色から、その色の明るさを調べて白か黒を返します。本来は白黒で判別するほうが確実性が上がる
+	 * Simplicityの場合はデフォルトで#333なので敢えて#333で調査
+	 *
+	 * @param  {string} rgb [rgb(r,g,b) or rgba(r,g,b,a)]
+	 * @return {string}    [#333333 or #ffffff]
 	 */
 	function parseColor(rgb) {
-		var bgColor = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/),
-			color = [];
-		bgColor.splice(0, 1);
+		var bgColor = rgb.match(/\d+/g),
+			lightColor = [255,255,255],
+			darkColor  = [51,51,51],
+			lightColorBrightness = colorBright(lightColor),
+			darkColorBrightness  = colorBright(darkColor),
+			bgHexColor;
 
-		for (var i in bgColor) {
-			bgColor[i] = parseInt(bgColor[i]).toString(16);
-			if (bgColor[i].length === 1) {
-				bgColor[i] = "0" + bgColor[i];
-			}
-		}
-		//console.log("color: ", bgColor);
-
-		return bgColor;
-
+		var bg = colorBright(bgColor);
+		var deltaL = Math.abs(bg - lightColorBrightness);
+    	var deltaD = Math.abs(bg - darkColorBrightness);
+    	return (deltaL > deltaD) ? "#"+colorToHex(lightColor).join("") : "#"+colorToHex(darkColor).join("");
 	}
 
 	/**
-	 * 入力された色より明度を調査して薄い色の場合は#333を濃い色の場合は#fffを返す関数
-	 *     背景色によっては読みにくくなる場合もある
-	 * @param  {array} rgb [(Array)[r,b,g] の形式で16進数 → ["ff","ff","ff"] ]
-	 * @return {string}     [description]
+	 * [255,255,255]のような色の配列を["ff","ff","ff"]と言うような16進数で返します
+	 * @param  {array} color [(color Array)[dec,dec,dec] min:0, max:255]
+	 * @return {array}       [(color Array)[hex,hex,hex] min:00, max:FF]
+	 */
+	function colorToHex(color){
+		for (var i = 0; i < 3; i++) {
+			color[i] = parseInt(color[i]).toString(16);
+			if (color[i].length === 1) {
+				color[i] = "0" + color[i];
+			}
+		}
+		return color;
+	}
+
+	/**
+	 * 入力された色より明度を調査する関数、背景色によっては読みにくくなる場合もある
+	 * @param  {array} rgb [(Array)[r,b,g] の形式でrgbはint min:0, max:255 ]
+	 * @return {string}     [0〜255]
 	 *
-	 * http://qiita.com/fnobi/items/d3464ba0e4b6596863cb
+	 * http://qiita.com/k_ui/items/f8c4077dafa1a41626c6
 	 */
 	function colorBright(rgb) {
-
-		if (rgb.length > 0) {
-			//補正値
-			var mod = {
-				r: 0.9,
-				g: 0.8,
-				b: 0.4
-			};
-			var rmod = mod.r || 1,
-				gmod = mod.g || 1,
-				bmod = mod.b || 1,
-				bright = Math.max(rgb[0] * rmod, rgb[1] * gmod, rgb[2] * bmod) / 255;
-
-			if (bright > 0.5) {
-				return "#333";
-			} else {
-				return "#fff";
-			}
-		} else {
-			return false;
-		}
+		return ((rgb[0] * 299) + (rgb[1] * 587) + (rgb[2] * 114)) / 1000;
 	}
 
 	/**
-	 * [bgColorCheck sidebarの背景に色が付いていた場合の処理をする関数]
+	 * sidebarの背景に色が付いていた場合の処理をする関数
+	 * カスタマイザーで背景白の設定ON、ユーザーが任意にサイドバーの色を設定している場合はカラーチェックfalse
+	 *
 	 * @param  {jQueryObject} tgt [基本追従エリアのセレクタが入ります]
 	 * @return {none}     [関数で出力するため返り値なし]
 	 *
@@ -94,18 +90,17 @@
 	function bgColorCheck(tgt) {
 		var sidebar = $("#sidebar");
 		var checkColor, fontColor,
-			isBgcolor = (sidebar.css("background-color") !== "transparent") ? true : false,
-			isFontcolor333 = (sidebar.find("h4").css("color") === "#333") ? true : false;
+			isBgcolor = (sidebar.css("background-color") !== "transparent") ? true : false;
 
 		// サイドバー・追従エリアの文字色チェック
 		// .custom-backgroundが存在して、サイドバーのbackground-colorに色が着いていない場合に
 		// サイドバーのinputとa以外の文字にcolorBright()で判断した色を付ける
 		if ($(".custom-background").length > 0 && !isBgcolor) {
 			checkColor = parseColor($(".custom-background").css("background-color"));
-			fontColor = colorBright(checkColor);
+			//fontColor = colorBright(checkColor);
 
-			tgt.css("color", fontColor);
-			sidebar.find("*:not('a, input')").css("color", fontColor);
+			tgt.css("color", checkColor);
+			sidebar.find("*:not('a, input')").css("color", checkColor);
 		}
 
 		if (isBgcolor) {
