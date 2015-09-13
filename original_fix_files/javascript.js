@@ -46,6 +46,7 @@
 	 * follow scrool widget, wordpress theme Simplicity専用
 	 * ※ 使用時には助長なコメントは削除して下さい。説明用です。
 	 *
+	 * 2015/09/13 不要な変数等削除、for文をより速く動かすために型もどき追加 リサイズ対応
 	 * 2015/09/12 色チェックの精度向上
 	 * 2015/09/09 23:18 今現在までにわかっている問題をすべて修正完了
 	 * 2015/09/09 new
@@ -74,8 +75,7 @@
 			lightColor = [255, 255, 255],
 			darkColor = [51, 51, 51],
 			lightColorBrightness = colorBright(lightColor),
-			darkColorBrightness = colorBright(darkColor),
-			bgHexColor;
+			darkColorBrightness = colorBright(darkColor);
 
 		var bg = colorBright(bgColor);
 		var deltaL = Math.abs(bg - lightColorBrightness);
@@ -89,9 +89,9 @@
 	 * @return {array}       [(color Array)[hex,hex,hex] min:00, max:FF]
 	 */
 	function colorToHex(color) {
-		for (var i = 0; i < 3; i++) {
+		for (var i = 0; i < 3 | 0; i = i + 1 | 0) {
 			color[i] = parseInt(color[i]).toString(16);
-			if (color[i].length === 1) {
+			if (color[i].length > 0) {
 				color[i] = "0" + color[i];
 			}
 		}
@@ -139,7 +139,6 @@
 		// サイドバーのinputとa以外の文字にcolorBright()で判断した色を付ける
 		if ($(".custom-background").length > 0 && !isBgcolor) {
 			checkColor = parseColor($(".custom-background").css("background-color"));
-			//fontColor = colorBright(checkColor);
 
 			tgt.css("color", checkColor);
 			sidebar.find("*:not('a, input')").css("color", checkColor);
@@ -204,7 +203,7 @@
 
 			timer = setTimeout(function() {
 
-				$(window).on("load scroll", function() {
+				$(window).on("load scroll resize", function() {
 
 					/**
 					 * sidebarの背景色をチェックする関数
