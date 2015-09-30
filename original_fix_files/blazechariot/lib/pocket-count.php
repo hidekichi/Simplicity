@@ -1,7 +1,7 @@
 <?php
 
 $url = $_GET['url'];
-$html = 'http://widgets.getpocket.com/v1/button?label=pocket&count=vertical&v=1&url=' . urlencode( $url );
+$html = 'http://widgets.getpocket.com/v1/button?label=pocket&count=vertical&v=1&url=' . $url;
 
 $ch = curl_init(); // 初期化
 curl_setopt( $ch, CURLOPT_URL, $html ); // URLの設定
