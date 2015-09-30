@@ -12,7 +12,7 @@
 		$json = json_decode($curl_results, true);
 		return intval( $json[0]['result']['metadata']['globalCounts']['count'] );
 	}
-	
+
 	$url = $_GET['url'];
 	$plusone = get_plusones($url);
 	echo $plusone;
