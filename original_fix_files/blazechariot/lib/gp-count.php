@@ -1,19 +1,19 @@
 <?php
-
 	function get_plusones($url) {
-		$curl = curl_init();
-		curl_setopt($curl, CURLOPT_URL, "https://clients6.google.com/rpc");
-		curl_setopt($curl, CURLOPT_POST, 1);
-		curl_setopt($curl, CURLOPT_POSTFIELDS, '[{"method":"pos.plusones.get","id":"p","params":{"nolog":true,"id":"' . $url . '","source":"widget","userId":"@viewer","groupId":"@self"},"jsonrpc":"2.0","key":"p","apiVersion":"v1"}]');
-		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-type: application/json'));
-		$curl_results = curl_exec ($curl);
-		curl_close ($curl);
-		$json = json_decode($curl_results, true);
-		return intval( $json[0]['result']['metadata']['globalCounts']['count'] );
-	}
 
+	    $ch = curl_init(); // 初期化
+		curl_setopt( $ch, CURLOPT_URL, $url ); // URLの設定
+		curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true ); // 出力内容を受け取る設定
+		$result = curl_exec( $ch ); // データの取得
+		curl_close($ch); // cURLのクローズ
+
+	    $vDoc = new DOMDocument();
+		@$vDoc->loadHTML($result);
+		$vCounter = $vDoc->getElementById('aggregateCount');
+		echo $vCounter->nodeValue;
+	}
 	$url = $_GET['url'];
-	$plusone = get_plusones($url);
-	echo $plusone;
+	$api = "https://plusone.google.com/_/+1/fastbutton?url=";
+	$plusone = get_plusones($api . urlencode($url));
+
 ?>
