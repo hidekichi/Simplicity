@@ -10,7 +10,7 @@ curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true ); // 出力内容を受け取る
 $result = curl_exec( $ch ); // データの取得
 curl_close($ch); // cURLのクローズ
 
-$jd = json_decode($result,true);
+$jd = json_decode($result, true);
 
 if( isset($jd['shares']) ){
 	$sub = $jd['shares'];
