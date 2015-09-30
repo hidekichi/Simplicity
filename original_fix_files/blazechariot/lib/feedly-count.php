@@ -12,7 +12,7 @@
 
 	$jd = json_decode($result,true);
 	$sub = $jd['subscribers'];
-	
+
 	echo $sub; //取得内容を出力
 
 ?>
