@@ -9,67 +9,66 @@
         global $g_is_small;
 ?>
     <div class="sns-buttons">
-        <?php
-            /**
-             * シェアボタン用のメッセージを取得
-             */
-            if ( get_share_msg() ):
-        ?>
-            <p><?php echo esc_html( get_share_msg() ) ?></p>
+    <?php
+        /**
+         * シェアボタン用のメッセージを取得
+         */
+        if ( get_share_msg() ):
+    ?>
+        <p><?php echo esc_html( get_share_msg() ) ?></p>
 
-        <?php endif; ?>
+    <?php endif; ?>
 
         <ul class="snsb clearfix">
 
-            <?php
-                /**
-                 * Twitterボタンを表示するか
-                 */
-                if ( is_twitter_btn_visible() ):
-            ?>
-                    <li class="twitter-btn">
-                        <a
-                            href        = "https://twitter.com/share"
-                            class       = "twitter-share-button"
-                            data-via    = ""
-                            data-url    = "<?php the_permalink(); ?>"
-                            data-text   = "<?php the_title(); ?>"
-                            data-count  = "<?php echo ($g_is_small ? 'horizontal' : 'vertical') ?>">Tweet
-                        </a>
-                        <script type="text/javascript" src="//platform.twitter.com/widgets.js"></script>
-                    </li>
+    <?php
+        /**
+         * Twitterボタンを表示するか
+         */
+        if ( is_twitter_btn_visible() ):
+    ?>
+            <li class="twitter-btn">
+                <a
+                    href        = "https://twitter.com/share"
+                    class       = "twitter-share-button"
+                    data-via    = ""
+                    data-url    = "<?php the_permalink(); ?>"
+                    data-text   = "<?php the_title(); ?>"
+                    data-count  = "<?php echo ($g_is_small ? 'horizontal' : 'vertical') ?>">Tweet
+                </a>
+                <script type="text/javascript" src="//platform.twitter.com/widgets.js"></script>
+            </li>
 
-                <?php endif; ?>
+        <?php endif; ?>
 
-            <?php
-                /**
-                 * Facebookボタンを表示するか
-                 */
-                if ( is_facebook_btn_visible() ):
-            ?>
-                    <li class="facebook-btn">
-                        <div id="fb-root"></div>
-                        <div
-                            class="fb-like"
-                            data-href="<?php the_permalink(); ?>"
-                            data-layout="<?php echo ($g_is_small ? 'button_count' : 'box_count') ?>"
-                            data-action="like"
-                            data-show-faces="false"
-                            data-share="false">
-                        </div>
-                    </li>
-                    <script>
-                        (function(d, s, id) {
-                            var js, fjs = d.getElementsByTagName(s)[0];
-                            if (d.getElementById(id)) return;
-                            js = d.createElement(s); js.id = id;
-                            js.src = "//connect.facebook.net/ja_JP/sdk.js#xfbml=1&version=v2.0";
-                            fjs.parentNode.insertBefore(js, fjs);
-                        }(document, 'script', 'facebook-jssdk'));
-                    </script>
-                <?php endif; //独自シェアボタン終了?>
+    <?php
+        /**
+         * Facebookボタンを表示するか
+         */
+        if ( is_facebook_btn_visible() ):
+    ?>
+            <li class="facebook-btn">
+                <div id="fb-root"></div>
+                <div
+                    class="fb-like"
+                    data-href="<?php the_permalink(); ?>"
+                    data-layout="<?php echo ($g_is_small ? 'button_count' : 'box_count') ?>"
+                    data-action="like"
+                    data-show-faces="false"
+                    data-share="false">
+                </div>
+            </li>
+            <script>
+                (function(d, s, id) {
+                    var js, fjs = d.getElementsByTagName(s)[0];
+                    if (d.getElementById(id)) return;
+                    js = d.createElement(s); js.id = id;
+                    js.src = "//connect.facebook.net/ja_JP/sdk.js#xfbml=1&version=v2.0";
+                    fjs.parentNode.insertBefore(js, fjs);
+                }(document, 'script', 'facebook-jssdk'));
+            </script>
 
-    <?php endif; //Facebook  <------ need? ?>
+        <?php endif; //Facebook  <------ need? ?>
 
     <?php
         /**

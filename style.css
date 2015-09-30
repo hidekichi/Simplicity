@@ -133,53 +133,58 @@ body {
 	border-color: transparent #ccc transparent transparent;
 	border-width: 2px 4px 2px 0;
 }
-.sns-group.balloon ul.balloon li {
+
+/* balloon type */
+
+.sns-group.balloon ul li {
 	height: 80px;
 	-webkit-flex-flow: column wrap;
 	-ms-flex-flow: column wrap;
 	flex-flow: column wrap;
 }
-.sns-group.balloon ul.balloon a:first-child {
+.sns-group.balloon ul a:first-child {
 	-webkit-box-ordinal-group: 3;
 	-webkit-order: 2;
 	-ms-flex-order: 2;
 	order: 2;
 }
-.sns-group.balloon ul.balloon a:last-child {
+.sns-group.balloon ul a:last-child {
 	-webkit-box-ordinal-group: 2;
 	-webkit-order: 1;
 	-ms-flex-order: 1;
 	order: 1;
 }
-.sns-group.balloon ul.balloon a .icon {
+.sns-group.balloon ul a .icon {
 	width: 100%;
 	height: 35px;
 	line-height: 35px;
 }
-.sns-group.balloon ul.balloon a .social-count {
+.sns-group.balloon ul a .social-count {
 	width: 100%;
 	height: 35px;
-	line-height: 33px;
+	line-height: 33px !important;
 }
-.sns-group.balloon ul.balloon a .social-count::before, .sns-group.balloon ul.balloon a .social-count::after {
+.sns-group.balloon ul a .social-count::before, .sns-group.balloon ul a .social-count::after {
 	top: initial;
 	bottom: 0;
 	left: 50%;
 }
-.sns-group.balloon ul.balloon a .social-count::after {
+.sns-group.balloon ul a .social-count::after {
 	-webkit-transform: translate(-50%, 3px);
 	-ms-transform: translate(-50%, 3px);
 	transform: translate(-50%, 3px);
 	border-color: #fff transparent transparent transparent;
 	border-width: 8px 4px 0 4px;
 }
-.sns-group.balloon ul.balloon a .social-count::before {
+.sns-group.balloon ul a .social-count::before {
 	-webkit-transform: translate(-50%, 5px);
 	-ms-transform: translate(-50%, 5px);
 	transform: translate(-50%, 5px);
 	border-color: #ccc transparent transparent transparent;
 	border-width: 4px 2px 0 2px;
 }
+
+/* viral type */
 
 .sns-group.viral ul {
   -webkit-box-pack: justify;

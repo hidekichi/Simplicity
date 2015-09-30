@@ -240,7 +240,10 @@
 	            href    = "//feedly.com/index.html#subscription%2Ffeed%2F<?php urlencode(bloginfo('rss2_url')); ?>"
 	            target  = "blank"
 	            rel     = "nofollow">
-				<span class="social-count"><?php echo get_feedly_count(); ?></span>
+				<span class="social-count">
+					<span class="fa fa-spinner fa-pulse"></span>
+					<?php //echo get_feedly_count(); ?>
+				</span>
 			</a>
 		</li>
 
