@@ -1,8 +1,8 @@
 <?php
 
-$url = $_GET['url'];
+$surl = $_GET['url'];
 $api = "http://graph.facebook.com/?id=";
-$rss = urlencode($url);
+$url = urlencode($surl);
 
 $ch = curl_init(); // 初期化
 curl_setopt( $ch, CURLOPT_URL, $api.$url ); // URLの設定
