@@ -65,6 +65,7 @@ if (is_singular()){//単一記事ページの場合
 	}
 
 } else {//単一記事ページページ以外の場合（アーカイブページやホームなど）
+
 	if ( get_ogp_home_image() ) {
 		$ogp_image = get_ogp_home_image();
 	} else {
