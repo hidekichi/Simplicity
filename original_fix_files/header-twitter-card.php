@@ -69,13 +69,16 @@ if (is_singular()){//単一記事ページの場合
 
 	if ( get_ogp_home_image() ) {
 		$ogp_image = get_ogp_home_image();
+
 	} else {
+
 		if ( is_header_logo_enable() && get_header_logo_url() ){//ヘッダーロゴがある場合はロゴを使用
 			$ogp_image = get_header_logo_url();
 		} elseif ( get_header_image() ){//ヘッダーイメージがある場合はそれを使用
 		// } else {//ヘッダーイメージがない場合は、テーマのスクリーンショット
 		//   $ogp_image = get_stylesheet_directory_uri().'/screenshot.png';
 		}
+
 	}
 
 	/**
