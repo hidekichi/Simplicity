@@ -172,16 +172,18 @@
 			ftTop = ft.get(0).offsetTop,
 			followArea = $("#sidebar-scroll"),
 			flwAreaHeight = followArea.outerHeight(),
-			flwAreaTop = followArea.get(0).offsetTop,
+			flwAreaTop = ( followArea.length > 0 ) ? followArea.get(0).offsetTop : 0,
 			flwAreaBottom = flwAreaTop + flwAreaHeight,
 			ftTopMargin = parseInt($(ft).css('margin-top'), 10),
 			mBottomMargin = parseInt($("#main").css('margin-bottom'), 10),
 			betweenMargin = ftTopMargin + mBottomMargin;
 
 		// 追従エリアの前にdummyブロックを挿入
-		$(followArea).before("<div class='dummy'></div>");
-		var dummy = $("#sidebar .dummy"),
-			dyOffset = dummy.get(0).offsetTop;
+		if ( flwAreaTop > 0 ){
+			$(followArea).before("<div class='dummy'></div>");
+			var dummy = $("#sidebar .dummy"),
+				dyOffset = dummy.get(0).offsetTop;
+		}
 
 		/**
 		 * setTimeoutにて、0.2秒後に処理が行われるようにするためのtimerです
